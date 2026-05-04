@@ -15,17 +15,15 @@
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
     
-    // Pixel ID'nizi buraya girin
     const FB_PIXEL_ID = '485582867441894';
     fbq('init', FB_PIXEL_ID);
     fbq('track', 'PageView');
     
-    // Facebook Conversions API Access Token
     const FB_CAPI_ACCESS_TOKEN = 'BURAYA_CAPI_ACCESS_TOKEN_GELECEK';
     const FB_CAPI_PIXEL_ID = FB_PIXEL_ID;
   </script>
   <noscript>
-    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=BURAYA_PIXEL_ID_GELECEK&ev=PageView&noscript=1"/>
+    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=485582867441894&ev=PageView&noscript=1"/>
   </noscript>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,7 +39,7 @@
       --text-secondary: #B0A99F;
       --text-muted: #6B6B6B;
       --gold: #C8A96E;
-	  --red: #FF0000;
+      --red: #FF0000;
       --gold-light: rgba(200, 169, 110, 0.12);
       --gold-border: rgba(200, 169, 110, 0.3);
       --danger: #FF4C4C;
@@ -75,20 +73,11 @@
 
     .font-serif { font-family: var(--font-serif); }
     .text-gold { color: var(--gold); }
-	.text-red { color: var(--red); }
+    .text-red { color: var(--red); }
     .container { max-width: 500px; margin: 0 auto; padding: 0 18px; }
 
     /* HEADER */
-    .header {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(10, 10, 10, 0.92);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      padding: 14px 18px;
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 10px;
-    }
+    .header { position: sticky; top: 0; z-index: 100; background: rgba(10, 10, 10, 0.92); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
     .header-logo { font-family: var(--font-serif); font-size: 26px; font-weight: 900; color: var(--gold); letter-spacing: 5px; line-height: 1; }
     .header-badge { font-size: 9px; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; width: 100%; order: 1; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.05); }
     .btn-whatsapp { background: var(--whatsapp); color: white; padding: 9px 18px; border-radius: 30px; font-size: 13px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(7,94,84,0.3); }
@@ -99,7 +88,7 @@
     .hero h1 { font-size: clamp(34px, 9vw, 48px); font-weight: 900; line-height: 1.1; margin-bottom: 12px; color: var(--text-primary); }
     #campaign-desc { font-size: 15px; color: var(--text-secondary); line-height: 1.6; }
 
-    /* PRODUCT GRID */
+    /* YENİ LİSTELEME TASARIMI (BEYAZ KARTLAR) */
     .products-section { padding: 10px 0 24px; }
     .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
     
@@ -108,6 +97,7 @@
     .card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .badge-hot { position: absolute; top: 8px; left: 8px; background: #111; color: #fff; font-size: 9px; padding: 4px 8px; border-radius: 12px; font-weight: 800; display: flex; align-items: center; gap: 4px; }
     .badge-price { position: absolute; top: 8px; right: 8px; background: rgba(200, 169, 110, 0.95); color: #000; font-size: 11px; padding: 4px 8px; border-radius: 8px; font-weight: 800; }
+    .badge-zoom { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.5); padding: 6px; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
     .card-content { padding: 12px; display: flex; flex-direction: column; flex: 1; }
     .card-title { font-family: var(--font-serif); font-size: 16px; font-weight: 800; color: #111; margin-bottom: 8px; }
     .card-divider { border: 0; border-bottom: 1px solid #eaeaea; margin: 0 0 10px 0; }
@@ -191,30 +181,13 @@
     @keyframes slideDown { from { opacity: 0; transform: translateX(-50%) translateY(-20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
     @keyframes slideUp { from { opacity: 1; transform: translateX(-50%) translateY(0); } to { opacity: 0; transform: translateX(-50%) translateY(-20px); } }
 
-    /* YENİ EKLENEN: BAŞARI MODALI (TAM EKRAN) */
-    .success-overlay {
-      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 9999; opacity: 0; animation: fadeInOverlay 0.4s forwards;
-      padding: 20px;
-    }
-    .success-modal {
-      background: var(--bg-card); border: 1px solid var(--gold);
-      border-radius: var(--radius-lg); padding: 40px 30px; text-align: center;
-      max-width: 400px; width: 100%; box-shadow: var(--shadow-gold);
-      transform: translateY(20px); animation: slideUpModal 0.5s forwards 0.1s;
-    }
-    .success-icon {
-      width: 80px; height: 80px; background: rgba(200, 169, 110, 0.15);
-      color: var(--gold); border-radius: 50%; display: flex;
-      align-items: center; justify-content: center; font-size: 40px;
-      margin: 0 auto 20px; border: 2px solid var(--gold);
-    }
+    /* BAŞARI MODALI (TAM EKRAN) */
+    .success-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; animation: fadeInOverlay 0.4s forwards; padding: 20px; }
+    .success-modal { background: var(--bg-card); border: 1px solid var(--gold); border-radius: var(--radius-lg); padding: 40px 30px; text-align: center; max-width: 400px; width: 100%; box-shadow: var(--shadow-gold); transform: translateY(20px); animation: slideUpModal 0.5s forwards 0.1s; }
+    .success-icon { width: 80px; height: 80px; background: rgba(200, 169, 110, 0.15); color: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; margin: 0 auto 20px; border: 2px solid var(--gold); }
     .success-title { font-family: var(--font-serif); font-size: 26px; font-weight: 800; color: var(--gold); margin-bottom: 16px; }
     .success-text { font-size: 15px; color: var(--text-primary); line-height: 1.6; }
     .success-timer { font-size: 12px; color: var(--text-muted); margin-top: 24px; font-family: monospace; }
-    
     @keyframes fadeInOverlay { to { opacity: 1; } }
     @keyframes slideUpModal { to { transform: translateY(0); } }
   </style>
@@ -287,10 +260,7 @@
         <div class="info-box">
           ⚠️ <strong class="text-gold">Sipariş Ver</strong> butonuna bastığınızda siparişiniz oluşturulur.<br>
           📲 Onay için müşteri temsilcimiz WhatsApp üzerinden iletişime geçecektir.<br>
-		  🚚 <strong class="text-red">Önemli Uyarı</strong>: ARAS KARGO ile çalışıyoruz.
-Köylere, askeriye ve inşaatlara ARAS KARGO **gönderim yapmamaktadır.**
-Çoğu müşterimiz adresini eksik yazmaktadır, adres bilginiz eksik olması durumunda siparişiniz kargoya **verilmeyecektir**.
-Sipariş veren müşterilerimizin lütfen bu duruma dikkat etmesini rica ederiz.
+          🚚 <strong class="text-red">Önemli Uyarı</strong>: ARAS KARGO ile çalışıyoruz. Köylere, askeriye ve inşaatlara ARAS KARGO <strong>gönderim yapmamaktadır.</strong> Çoğu müşterimiz adresini eksik yazmaktadır, adres bilginiz eksik olması durumunda siparişiniz kargoya <strong>verilmeyecektir</strong>. Sipariş veren müşterilerimizin lütfen bu duruma dikkat etmesini rica ederiz.
         </div>
         <button type="submit" id="submitBtn" class="btn-submit" disabled>2 ürün seçmeniz gerekiyor</button>
       </form>
@@ -337,8 +307,14 @@ Sipariş veren müşterilerimizin lütfen bu duruma dikkat etmesini rica ederiz.
     let userData = {};
     window._hasAutoScrolledToForm = false; 
 
+    // ============ FACEBOOK PIXEL YARDIMCI FONKSİYONLARI ============
     const FacebookPixel = {
-      track(eventName, params = {}) { if (typeof fbq === 'function') fbq('track', eventName, params); },
+      track(eventName, params = {}, eventId = null) { 
+        if (typeof fbq === 'function') {
+          if(eventId) fbq('track', eventName, params, { eventID: eventId });
+          else fbq('track', eventName, params);
+        }
+      },
       trackViewContent(product) { this.track('ViewContent', { content_name: product.isim, content_ids: [product.id], content_type: 'product', value: product.fiyat, currency: 'TRY' }); },
       trackAddToCart(product, quantity = 1) { this.track('AddToCart', { content_name: product.isim, content_ids: [product.id], content_type: 'product', value: product.fiyat, currency: 'TRY', contents: [{ id: product.id, quantity: quantity, item_price: product.fiyat }] }); },
       trackInitiateCheckout(cartItems, totalValue) {
@@ -359,22 +335,24 @@ Sipariş veren müşterilerimizin lütfen bu duruma dikkat etmesini rica ederiz.
         if (customerInfo.firstName) purchaseParams.fn = customerInfo.firstName;
         if (customerInfo.lastName) purchaseParams.ln = customerInfo.lastName;
         
-        this.track('Purchase', purchaseParams);
-        this.sendCAPIEvent('Purchase', purchaseParams);
+        this.track('Purchase', purchaseParams, orderId); // Frontend event_id eklendi
+        this.sendCAPIEvent('Purchase', purchaseParams, orderId); // Backend event_id eklendi
       },
-      async sendCAPIEvent(eventName, eventData) {
+      async sendCAPIEvent(eventName, eventData, eventId = null) {
         if (!window.FB_CAPI_ACCESS_TOKEN || window.FB_CAPI_ACCESS_TOKEN === 'BURAYA_CAPI_ACCESS_TOKEN_GELECEK') return;
         try {
-          const eventPayload = {
-            data: [{
-              event_name: eventName,
-              event_time: Math.floor(Date.now() / 1000),
-              action_source: 'website',
-              event_source_url: window.location.href,
-              user_data: { client_ip_address: userData.ip || '', client_user_agent: navigator.userAgent },
-              custom_data: eventData
-            }]
+          const payloadData = {
+            event_name: eventName,
+            event_time: Math.floor(Date.now() / 1000),
+            action_source: 'website',
+            event_source_url: window.location.href,
+            user_data: { client_ip_address: userData.ip || '', client_user_agent: navigator.userAgent },
+            custom_data: eventData
           };
+          if(eventId) payloadData.event_id = eventId;
+
+          const eventPayload = { data: [payloadData] };
+          
           await fetch(`https://graph.facebook.com/v18.0/${window.FB_CAPI_PIXEL_ID}/events?access_token=${window.FB_CAPI_ACCESS_TOKEN}`, {
             method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(eventPayload)
           });
@@ -382,32 +360,32 @@ Sipariş veren müşterilerimizin lütfen bu duruma dikkat etmesini rica ederiz.
       }
     };
 
-const reviews = [
-  { name: "Ahmet Yılmaz", avatar: "https://i.pravatar.cc/100?img=11", date: "2 gün önce", stars: 5, text: "Gerçekten harika bir alışveriş deneyimiydi. Ayakkabıların kalitesi beklediğimin çok üstünde çıktı. 2 günde teslim edildi, paketleme bile özenliydi. Kesinlikle tekrar alışveriş yapacağım.", images: [] },
-  { name: "Zeynep Kaya", avatar: "https://i.pravatar.cc/100?img=5", date: "1 hafta önce", stars: 5, text: "Kampanyadan 2 ürün aldım, ikisi de birbirinden güzel. Müşteri hizmetleri çok ilgiliydi, WhatsApp'tan anında dönüş yaptılar.", images: [] },
-  { name: "Mehmet Demir", avatar: "https://i.pravatar.cc/100?img=12", date: "3 gün önce", stars: 5, text: "Deri dokusu, dikiş kalitesi gerçekten premium seviyede. Fiyat performans olarak piyasadaki en iyi seçenek.", images: [] },
-  { name: "Ayşe Öztürk", avatar: "https://i.pravatar.cc/100?img=9", date: "5 gün önce", stars: 5, text: "Kapıda ödeme seçeneği çok güven vericiydi. Ürünü teslim almadan önce kontrol ettim, her şey eksiksizdi.", images: [] },
-  { name: "Emre Çelik", avatar: "https://i.pravatar.cc/100?img=15", date: "1 gün önce", stars: 5, text: "Siparişim beklediğimden çok daha hızlı geldi. Ürün fotoğraflardaki gibi, hatta daha güzel. Teşekkürler!", images: [] },
-  { name: "Elif Şahin", avatar: "https://i.pravatar.cc/100?img=23", date: "4 gün önce", stars: 5, text: "İade sürecim çok sorunsuz halledildi. Müşteri temsilcisi adım adım yardımcı oldu. Güvenle alışveriş yapabileceğiniz bir site.", images: [] },
-  { name: "Burak Yıldız", avatar: "https://i.pravatar.cc/100?img=33", date: "6 gün önce", stars: 4, text: "Ürün kaliteli ama kargo biraz geç geldi. Yine de memnunum, fiyatına göre çok iyi.", images: [] },
-  { name: "Merve Aydın", avatar: "https://i.pravatar.cc/100?img=44", date: "2 hafta önce", stars: 5, text: "Hediyelik aldığım ürün tam istediğim gibi çıktı. Paketleme o kadar şık ki, hediye paketi yapmama bile gerek kalmadı!", images: [] },
-  { name: "Can Arslan", avatar: "https://i.pravatar.cc/100?img=52", date: "3 gün önce", stars: 5, text: "Bedem tam oturdu, malzeme kalitesi mükemmel. Bir sonraki siparişimi de buradan vereceğim kesin.", images: [] },
-  { name: "Seda Kurt", avatar: "https://i.pravatar.cc/100?img=61", date: "1 hafta önce", stars: 5, text: "Canlı destekte sorularıma anında yanıt aldım. Ürün de açıklamada belirtildiği gibi geldi. Çok memnun kaldım.", images: [] },
-  { name: "Yusuf Doğan", avatar: "https://i.pravatar.cc/100?img=70", date: "5 gün önce", stars: 4, text: "Genel olarak memnunum. Sadece renk tonu fotoğraftakinden biraz farklıydı ama yine de beğendim.", images: [] },
-  { name: "İrem Kılıç", avatar: "https://i.pravatar.cc/100?img=18", date: "10 gün önce", stars: 5, text: "İndirim döneminde aldım, fiyatına göre inanılmaz kalite. Kumaşı yumuşak, dikişleri sağlam. Tavsiye ederim!", images: [] },
-  { name: "Mustafa Aslan", avatar: "https://i.pravatar.cc/100?img=27", date: "2 gün önce", stars: 5, text: "İkinci siparişim ve yine harika bir deneyim. Sadakat programı da çok avantajlı, puan biriktirmek süper.", images: [] },
-  { name: "Gamze Özer", avatar: "https://i.pravatar.cc/100?img=36", date: "1 hafta önce", stars: 5, text: "Ürün açıklaması çok detaylıydı, bu sayede doğru bedeni seçebildim. Tam istediğim gibi oldu, teşekkürler.", images: [] },
-  { name: "Ali Polat", avatar: "https://i.pravatar.cc/100?img=45", date: "4 gün önce", stars: 4, text: "Kalite iyi, fiyat uygun. Sadece kargo takip sistemi biraz daha güncel olabilirdi. Ürün için 5 yıldız hak ediyor.", images: [] },
-  { name: "Dilara Koç", avatar: "https://i.pravatar.cc/100?img=54", date: "3 gün önce", stars: 5, text: "Arkadaşıma hediye aldım, çok beğendi. Hatta o da hemen sipariş verdi. Kalite ve hizmet bir arada!", images: [] },
-  { name: "Serkan Yildirim", avatar: "https://i.pravatar.cc/100?img=63", date: "1 hafta önce", stars: 5, text: "Mobil uygulamadan sipariş verdim, çok pratikti. Bildirimlerle süreci takip etmek kolaydı. Ürün de mükemmel geldi.", images: [] },
-  { name: "Esra Erdoğan", avatar: "https://i.pravatar.cc/100?img=72", date: "6 gün önce", stars: 5, text: "İlk kez alışveriş yaptım ama son olmayacak. Güvenlik önlemleri, hızlı teslimat, kaliteli ürün... Her şey tam!", images: [] },
-  { name: "Tolga Kara", avatar: "https://i.pravatar.cc/100?img=81", date: "2 gün önce", stars: 4, text: "Ürün güzel ama kutusu hafif ezik geldi. İçindeki ürün sağlam olduğu için sorun yok, yine de dikkat edilebilir.", images: [] },
-  { name: "Büşra Tekin", avatar: "https://i.pravatar.cc/100?img=90", date: "5 gün önce", stars: 5, text: "Stok uyarısı özelliği sayesinde istediğim ürün geldiğinde hemen sipariş verdim. Çok memnunum, teşekkürler!", images: [] },
-  { name: "Onur Aksoy", avatar: "https://i.pravatar.cc/100?img=13", date: "1 hafta önce", stars: 5, text: "Fiyat/performans açısından rakipsiz. Aynı kaliteyi başka yerde bu fiyata bulamazsınız. Kesinlikle tavsiye ederim.", images: [] },
-  { name: "Hazal Çetin", avatar: "https://i.pravatar.cc/100?img=22", date: "3 gün önce", stars: 5, text: "Kargo görevlisi çok kibar davrandı, ürünümü özenle teslim etti. Site deneyimi de bir o kadar profesyonel.", images: [] },
-  { name: "Deniz Güneş", avatar: "https://i.pravatar.cc/100?img=31", date: "4 gün önce", stars: 5, text: "Ürün açıklamaları çok net, beden tablosu doğru. Hiç sürpriz yaşamadan istediğim ürünü aldım. Süper!", images: [] },
-  { name: "Kübra Baş", avatar: "https://i.pravatar.cc/100?img=40", date: "1 hafta önce", stars: 4, text: "Genel olarak çok iyi. Sadece iade etiketi kargo kutusunun içinde olsaydı daha pratik olurdu. Yine de memnunum.", images: [] }
-];
+    const reviews = [
+      { name: "Ahmet Yılmaz", avatar: "https://i.pravatar.cc/100?img=11", date: "2 gün önce", stars: 5, text: "Gerçekten harika bir alışveriş deneyimiydi. Ayakkabıların kalitesi beklediğimin çok üstünde çıktı. 2 günde teslim edildi, paketleme bile özenliydi. Kesinlikle tekrar alışveriş yapacağım.", images: [] },
+      { name: "Zeynep Kaya", avatar: "https://i.pravatar.cc/100?img=5", date: "1 hafta önce", stars: 5, text: "Kampanyadan 2 ürün aldım, ikisi de birbirinden güzel. Müşteri hizmetleri çok ilgiliydi, WhatsApp'tan anında dönüş yaptılar.", images: [] },
+      { name: "Mehmet Demir", avatar: "https://i.pravatar.cc/100?img=12", date: "3 gün önce", stars: 5, text: "Deri dokusu, dikiş kalitesi gerçekten premium seviyede. Fiyat performans olarak piyasadaki en iyi seçenek.", images: [] },
+      { name: "Ayşe Öztürk", avatar: "https://i.pravatar.cc/100?img=9", date: "5 gün önce", stars: 5, text: "Kapıda ödeme seçeneği çok güven vericiydi. Ürünü teslim almadan önce kontrol ettim, her şey eksiksizdi.", images: [] },
+      { name: "Emre Çelik", avatar: "https://i.pravatar.cc/100?img=15", date: "1 gün önce", stars: 5, text: "Siparişim beklediğimden çok daha hızlı geldi. Ürün fotoğraflardaki gibi, hatta daha güzel. Teşekkürler!", images: [] },
+      { name: "Elif Şahin", avatar: "https://i.pravatar.cc/100?img=23", date: "4 gün önce", stars: 5, text: "İade sürecim çok sorunsuz halledildi. Müşteri temsilcisi adım adım yardımcı oldu. Güvenle alışveriş yapabileceğiniz bir site.", images: [] },
+      { name: "Burak Yıldız", avatar: "https://i.pravatar.cc/100?img=33", date: "6 gün önce", stars: 4, text: "Ürün kaliteli ama kargo biraz geç geldi. Yine de memnunum, fiyatına göre çok iyi.", images: [] },
+      { name: "Merve Aydın", avatar: "https://i.pravatar.cc/100?img=44", date: "2 hafta önce", stars: 5, text: "Hediyelik aldığım ürün tam istediğim gibi çıktı. Paketleme o kadar şık ki, hediye paketi yapmama bile gerek kalmadı!", images: [] },
+      { name: "Can Arslan", avatar: "https://i.pravatar.cc/100?img=52", date: "3 gün önce", stars: 5, text: "Bedem tam oturdu, malzeme kalitesi mükemmel. Bir sonraki siparişimi de buradan vereceğim kesin.", images: [] },
+      { name: "Seda Kurt", avatar: "https://i.pravatar.cc/100?img=61", date: "1 hafta önce", stars: 5, text: "Canlı destekte sorularıma anında yanıt aldım. Ürün de açıklamada belirtildiği gibi geldi. Çok memnun kaldım.", images: [] },
+      { name: "Yusuf Doğan", avatar: "https://i.pravatar.cc/100?img=70", date: "5 gün önce", stars: 4, text: "Genel olarak memnunum. Sadece renk tonu fotoğraftakinden biraz farklıydı ama yine de beğendim.", images: [] },
+      { name: "İrem Kılıç", avatar: "https://i.pravatar.cc/100?img=18", date: "10 gün önce", stars: 5, text: "İndirim döneminde aldım, fiyatına göre inanılmaz kalite. Kumaşı yumuşak, dikişleri sağlam. Tavsiye ederim!", images: [] },
+      { name: "Mustafa Aslan", avatar: "https://i.pravatar.cc/100?img=27", date: "2 gün önce", stars: 5, text: "İkinci siparişim ve yine harika bir deneyim. Sadakat programı da çok avantajlı, puan biriktirmek süper.", images: [] },
+      { name: "Gamze Özer", avatar: "https://i.pravatar.cc/100?img=36", date: "1 hafta önce", stars: 5, text: "Ürün açıklaması çok detaylıydı, bu sayede doğru bedeni seçebildim. Tam istediğim gibi oldu, teşekkürler.", images: [] },
+      { name: "Ali Polat", avatar: "https://i.pravatar.cc/100?img=45", date: "4 gün önce", stars: 4, text: "Kalite iyi, fiyat uygun. Sadece kargo takip sistemi biraz daha güncel olabilirdi. Ürün için 5 yıldız hak ediyor.", images: [] },
+      { name: "Dilara Koç", avatar: "https://i.pravatar.cc/100?img=54", date: "3 gün önce", stars: 5, text: "Arkadaşıma hediye aldım, çok beğendi. Hatta o da hemen sipariş verdi. Kalite ve hizmet bir arada!", images: [] },
+      { name: "Serkan Yildirim", avatar: "https://i.pravatar.cc/100?img=63", date: "1 hafta önce", stars: 5, text: "Mobil uygulamadan sipariş verdim, çok pratikti. Bildirimlerle süreci takip etmek kolaydı. Ürün de mükemmel geldi.", images: [] },
+      { name: "Esra Erdoğan", avatar: "https://i.pravatar.cc/100?img=72", date: "6 gün önce", stars: 5, text: "İlk kez alışveriş yaptım ama son olmayacak. Güvenlik önlemleri, hızlı teslimat, kaliteli ürün... Her şey tam!", images: [] },
+      { name: "Tolga Kara", avatar: "https://i.pravatar.cc/100?img=81", date: "2 gün önce", stars: 4, text: "Ürün güzel ama kutusu hafif ezik geldi. İçindeki ürün sağlam olduğu için sorun yok, yine de dikkat edilebilir.", images: [] },
+      { name: "Büşra Tekin", avatar: "https://i.pravatar.cc/100?img=90", date: "5 gün önce", stars: 5, text: "Stok uyarısı özelliği sayesinde istediğim ürün geldiğinde hemen sipariş verdim. Çok memnunum, teşekkürler!", images: [] },
+      { name: "Onur Aksoy", avatar: "https://i.pravatar.cc/100?img=13", date: "1 hafta önce", stars: 5, text: "Fiyat/performans açısından rakipsiz. Aynı kaliteyi başka yerde bu fiyata bulamazsınız. Kesinlikle tavsiye ederim.", images: [] },
+      { name: "Hazal Çetin", avatar: "https://i.pravatar.cc/100?img=22", date: "3 gün önce", stars: 5, text: "Kargo görevlisi çok kibar davrandı, ürünümü özenle teslim etti. Site deneyimi de bir o kadar profesyonel.", images: [] },
+      { name: "Deniz Güneş", avatar: "https://i.pravatar.cc/100?img=31", date: "4 gün önce", stars: 5, text: "Ürün açıklamaları çok net, beden tablosu doğru. Hiç sürpriz yaşamadan istediğim ürünü aldım. Süper!", images: [] },
+      { name: "Kübra Baş", avatar: "https://i.pravatar.cc/100?img=40", date: "1 hafta önce", stars: 4, text: "Genel olarak çok iyi. Sadece iade etiketi kargo kutusunun içinde olsaydı daha pratik olurdu. Yine de memnunum.", images: [] }
+    ];
 
     let currentReviewIndex = 0;
     const reviewContainer = document.getElementById('review-container');
@@ -515,41 +493,58 @@ const reviews = [
       }
     }
 
-    async function loadProducts() {
-      const querySnapshot = await getDocs(collection(db, "products"));
-      const listDiv = document.getElementById('product-list');
-      document.getElementById('loading').style.display = 'none';
-      listDiv.innerHTML = '';
+async function loadProducts() {
+  const querySnapshot = await getDocs(collection(db, "products"));
+  const listDiv = document.getElementById('product-list');
+  document.getElementById('loading').style.display = 'none';
+  listDiv.innerHTML = '';
 
-      querySnapshot.forEach((doc) => {
-        const p = { id: doc.id, ...doc.data() };
-        if (!p.aktif) return;
-        allProducts.push(p);
-        
-        let variantBoxes = (p.varyantlar || []).map(v => `
-          <div onclick="event.stopPropagation(); window.addToCart('${p.id}', '${v}')" class="variant-box">
-            ${v}
+  // Ürünleri diziye al
+  const productsArray = [];
+  querySnapshot.forEach((doc) => {
+    const p = { id: doc.id, ...doc.data() };
+    if (!p.aktif) return;
+    productsArray.push(p);
+  });
+
+  // İstemci tarafında eklenmeTarihi'ne göre sırala (ilk eklenen önce)
+  productsArray.sort((a, b) => {
+    const dateA = a.eklenmeTarihi ? a.eklenmeTarihi.toDate() : new Date(0);
+    const dateB = b.eklenmeTarihi ? b.eklenmeTarihi.toDate() : new Date(0);
+    return dateA - dateB; // asc: küçükten büyüğe (ilk eklenen önce)
+  });
+
+  // Sıralanmış ürünleri ekrana bas
+  productsArray.forEach((p) => {
+    allProducts.push(p);
+    
+    let variantBoxes = (p.varyantlar || []).map(v => `
+      <div onclick="event.stopPropagation(); window.addToCart('${p.id}', '${v}')" class="variant-box">
+        ${v}
+      </div>
+    `).join('');
+
+    listDiv.innerHTML += `
+      <div class="card-light" onclick="window.viewProduct('${p.id}')">
+        <div class="card-img-wrapper">
+          <div class="badge-hot">🔥 Çok Satan</div>
+          <div class="badge-price">${p.fiyat} ₺</div>
+          <img src="${p.resim}" alt="${p.isim}" loading="lazy">
+          <div class="badge-zoom">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
           </div>
-        `).join('');
-
-        listDiv.innerHTML += `
-          <div class="card-light" onclick="window.viewProduct('${p.id}')">
-            <div class="card-img-wrapper">
-              <div class="badge-hot">🔥 Çok Satan</div>
-              <div class="badge-price">${p.fiyat} ₺</div>
-              <img src="${p.resim}" alt="${p.isim}" loading="lazy">
-            </div>
-            <div class="card-content">
-              <h3 class="card-title">${p.isim}</h3>
-              <hr class="card-divider">
-              <div class="variant-label">${p.varyantAdi || 'NUMARA SEÇ'}</div>
-              <div class="variant-grid">
-                ${variantBoxes}
-              </div>
-            </div>
-          </div>`;
-      });
-    }
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">${p.isim}</h3>
+          <hr class="card-divider">
+          <div class="variant-label">${p.varyantAdi || 'NUMARA SEÇ'}</div>
+          <div class="variant-grid">
+            ${variantBoxes}
+          </div>
+        </div>
+      </div>`;
+  });
+}
 
     window.viewProduct = (id) => {
       const product = allProducts.find(p => p.id === id);
@@ -774,7 +769,6 @@ const reviews = [
         
         FacebookPixel.trackPurchase(orderRef.id, cart, totalTutar, customerInfo);
         
-        // BAŞARI MODALINI ÇAĞIR VE 15 SANİYE BEKLE
         window.showSuccessModal();
         setTimeout(() => location.reload(), 15000);
 
