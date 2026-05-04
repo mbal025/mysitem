@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yönetim Paneli | Sistem Merkezi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex">
+
+    <div class="w-64 bg-slate-900 text-white flex-shrink-0 hidden md:flex flex-col">
+        <div class="p-6 flex-1">
+            <h1 class="text-xl font-bold border-b border-slate-700 pb-4 tracking-tighter text-blue-400">ADMIN PANEL</h1>
+            <nav class="mt-6 space-y-2">
+                <button onclick="showTab('orders')" class="w-full text-left p-3 hover:bg-slate-800 rounded font-bold transition">Siparişler</button>
+                <button onclick="showTab('products')" class="w-full text-left p-3 hover:bg-slate-800 rounded font-bold transition">Ürün Yönetimi</button>
+                <button onclick="showTab('campaign')" class="w-full text-left p-3 hover:bg-slate-800 rounded font-bold transition">Kampanya Ayarları</button>
+            </nav>
+        </div>
+    </div>
+
+    <div class="flex-1 p-8 overflow-y-auto">
+        
+        <div id="tab-orders" class="tab-content">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-black text-slate-800 uppercase">Gelen Siparişler</h2>
+                <button onclick="refreshOrders()" class="bg-blue-600 text-white px-5 py-2 rounded-lg font-bold shadow-lg hover:bg-blue-700">Listeyi Yenile</button>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-6 bg-white p-3 rounded-xl shadow-sm border border-slate-200">
+                <button onclick="setFilter('tümü')" id="btn-filter-tümü" class="filter-btn bg-slate-800 text-white px-4 py-2 rounded font-bold text-sm transition">Tümü</button>
+                <button onclick="setFilter('yeni')" id="btn-filter-yeni" class="filter-btn bg-slate-100 text-slate-600 hover:bg-blue-100 hover:text-blue-700 px-4 py-2 rounded font-bold text-sm transition">Yeni Siparişler</button>
+                <button onclick="setFilter('onaylandi')" id="btn-filter-onaylandi" class="filter-btn bg-slate-100 text-slate-600 hover:bg-green-100 hover:text-green-700 px-4 py-2 rounded font-bold text-sm transition">Onaylananlar</button>
+                <button onclick="setFilter('iptal')" id="btn-filter-iptal" class="filter-btn bg-slate-100 text-slate-600 hover:bg-red-100 hover:text-red-700 px-4 py-2 rounded font-bold text-sm transition">İptal Edilenler</button>
+            </div>
+
+            <div id="order-list" class="space-y-4 mb-6">
+                </div>
+
+            <div class="text-center">
+                <button id="load-more-btn" onclick="loadOrders(true)" class="hidden bg-slate-200 text-slate-700 px-8 py-3 rounded-xl font-black hover:bg-slate-300 transition">
+                    DAHA FAZLA YÜKLE
+                </button>
+            </div>
+        </div>
+
+        <div id="tab-products" class="tab-content hidden">
+            <h2 class="text-2xl font-black text-slate-800 uppercase mb-6">Ürün Yönetimi</h2>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-8">
+                <h3 class="text-lg font-black text-slate-800 mb-4 uppercase border-b pb-2">Yeni Ürün Ekle</h3>
+                <form id="addProductForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div><label class="block text-xs font-black text-slate-400 uppercase mb-1">Ürün Adı</label><input type="text" id="new-prod-name" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl font-bold"></div>
+                    <div><label class="block text-xs font-black text-slate-400 uppercase mb-1">Fiyat (₺)</label><input type="number" id="new-prod-price" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl font-bold"></div>
+                    <div><label class="block text-xs font-black text-slate-400 uppercase mb-1">Resim URL</label><input type="url" id="new-prod-img" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl font-bold"></div>
+                    <div><label class="block text-xs font-black text-slate-400 uppercase mb-1">Varyant Adı (Örn: Numara)</label><input type="text" id="new-prod-vname" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl font-bold"></div>
+                    <div class="md:col-span-2"><label class="block text-xs font-black text-slate-400 uppercase mb-1">Varyant Seçenekleri (Virgülle ayır)</label><input type="text" id="new-prod-variants" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl font-bold"></div>
+                    <div class="md:col-span-full mt-2"><button type="submit" id="add-prod-btn" class="bg-green-600 text-white px-6 py-3 rounded-xl font-black shadow-lg hover:bg-green-700">SİSTEME YENİ ÜRÜN EKLE</button></div>
+                </form>
+            </div>
+            <div id="product-list-admin" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </div>
+
+        <div id="tab-campaign" class="tab-content hidden">
+            <h2 class="text-2xl font-black text-slate-800 mb-6 uppercase">Kampanya Yönetimi</h2>
+            <div class="bg-white p-8 rounded-3xl shadow-xl max-w-lg border border-slate-100">
+                <div class="space-y-6">
+                    <div><label class="block text-xs font-black text-slate-400 uppercase mb-2">Durum</label><select id="set-camp-active" class="w-full p-4 bg-slate-50 rounded-2xl font-bold"><option value="true">Kampanya Aktif</option><option value="false">Kampanya Kapalı</option></select></div>
+                    
+                    <div>
+                        <label class="block text-xs font-black text-slate-400 uppercase mb-2">Zorunlu Minimum Sipariş Adedi</label>
+                        <input type="number" id="set-camp-min" class="w-full p-4 bg-slate-50 rounded-2xl font-bold" placeholder="Örn: 2">
+                        <p class="text-[10px] text-slate-400 mt-1">Siparişi kısıtlamak istemiyorsanız 1 yazın.</p>
+                    </div>
+                    <div><label class="block text-xs font-black text-slate-400 uppercase mb-2">İkinci Ürün Fiyatı (₺)</label><input type="number" id="set-camp-price" class="w-full p-4 bg-slate-50 rounded-2xl font-bold"></div>
+                    <div><label class="block text-xs font-black text-slate-400 uppercase mb-2">Kampanya Mesajı</label><input type="text" id="set-camp-msg" class="w-full p-4 bg-slate-50 rounded-2xl font-bold"></div>
+                    <button onclick="saveCampaignSettings()" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black hover:bg-blue-700">AYARLARI KAYDET</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, getDocs, query, orderBy, addDoc, serverTimestamp, where, limit, startAfter } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCg4r8MpPJWKi9i-s2y4HKPbKBSP-ojK9s",
+            authDomain: "tekyaprak.firebaseapp.com",
+            projectId: "tekyaprak",
+            storageBucket: "tekyaprak.firebasestorage.app",
+            messagingSenderId: "863518206806",
+            appId: "1:863518206806:web:4fcbf8203854a59b1b04f7"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Sayfalandırma ve Filtreleme Değişkenleri
+        let lastVisibleDoc = null;
+        let currentFilter = 'tümü';
+        const ORDERS_PER_PAGE = 10;
+
+        window.showTab = (tabName) => {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+            document.getElementById('tab-' + tabName).classList.remove('hidden');
+            if(tabName === 'campaign') loadCampaignSettings();
+            if(tabName === 'orders') refreshOrders();
+            if(tabName === 'products') loadProductsAdmin();
+        };
+
+        // --- FİLTRELEME MANTIĞI ---
+        window.setFilter = (filterStatus) => {
+            currentFilter = filterStatus;
+            
+            // Butonların görsel durumunu güncelle
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-slate-800', 'text-white');
+                btn.classList.add('bg-slate-100', 'text-slate-600');
+            });
+            const activeBtn = document.getElementById('btn-filter-' + filterStatus);
+            activeBtn.classList.remove('bg-slate-100', 'text-slate-600');
+            activeBtn.classList.add('bg-slate-800', 'text-white');
+
+            refreshOrders();
+        };
+
+        window.refreshOrders = () => {
+            lastVisibleDoc = null; // Sayfalandırmayı sıfırla
+            document.getElementById('order-list').innerHTML = '<p class="font-bold text-slate-500">Siparişler çekiliyor...</p>';
+            document.getElementById('load-more-btn').classList.add('hidden');
+            loadOrders();
+        };
+
+        // --- SİPARİŞLERİ YÜKLE (Sayfalandırmalı) ---
+        window.loadOrders = async (isLoadMore = false) => {
+            const list = document.getElementById('order-list');
+            
+            try {
+                // Sorguyu inşa et
+                let queryConstraints = [];
+                
+                if (currentFilter !== 'tümü') {
+                    queryConstraints.push(where("durum", "==", currentFilter));
+                }
+                
+                queryConstraints.push(orderBy("tarih", "desc"));
+                queryConstraints.push(limit(ORDERS_PER_PAGE));
+
+                if (isLoadMore && lastVisibleDoc) {
+                    queryConstraints.push(startAfter(lastVisibleDoc));
+                }
+
+                const q = query(collection(db, "orders"), ...queryConstraints);
+                const querySnapshot = await getDocs(q);
+                
+                if (querySnapshot.empty) {
+                    if (!isLoadMore) {
+                        list.innerHTML = `<div class="p-8 bg-white rounded border text-center font-bold">Bu filtrede sipariş bulunamadı.</div>`;
+                    } else {
+                        document.getElementById('load-more-btn').classList.add('hidden');
+                    }
+                    return;
+                }
+
+                // Son dökümanı sayfalandırma için kaydet
+                lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+                let ordersHtml = isLoadMore ? list.innerHTML : ''; // Daha fazla yükle ise eski listeye ekle
+                
+                querySnapshot.forEach((doc) => {
+                    const o = doc.data();
+                    const id = doc.id;
+                    const tarih = o.tarih ? o.tarih.toDate().toLocaleString('tr-TR') : '-';
+                    
+                    let statusColor = o.durum === 'yeni' ? 'bg-blue-100 text-blue-700' : 
+                                      o.durum === 'onaylandi' ? 'bg-green-100 text-green-700' : 
+                                      o.durum === 'iptal' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700';
+
+                    ordersHtml += `
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <span class="px-3 py-1 rounded text-xs font-black uppercase tracking-widest ${statusColor}" id="badge-${id}">${o.durum || 'YENİ'}</span>
+                                    <span class="text-xs text-slate-400 ml-2">${tarih}</span>
+                                </div>
+                                <div class="space-x-2">
+                                    <button onclick="updateOrderStatus('${id}', 'onaylandi')" class="text-xs bg-green-50 text-green-600 font-bold px-3 py-1 rounded hover:bg-green-100 border border-green-200">Onayla/Kargola</button>
+                                    <button onclick="updateOrderStatus('${id}', 'iptal')" class="text-xs bg-red-50 text-red-600 font-bold px-3 py-1 rounded hover:bg-red-100 border border-red-200">İptal Et</button>
+                                    <button onclick="deleteOrder('${id}')" class="text-xs bg-slate-100 text-slate-600 font-bold px-3 py-1 rounded hover:bg-slate-200">Sil</button>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="flex-1">
+                                    <h3 class="text-xl font-black">${o.musteri?.adSoyad}</h3>
+                                    <p class="text-blue-600 font-bold text-lg">${o.musteri?.tel}</p>
+                                    <p class="text-sm text-slate-600 mt-2">${o.musteri?.il} / ${o.musteri?.ilce} - ${o.musteri?.adres}</p>
+                                    ${o.musteri?.mesaj ? `<p class="mt-2 text-sm bg-yellow-50 p-2 border border-yellow-100 rounded"><strong>Not:</strong> ${o.musteri.mesaj}</p>` : ''}
+                                </div>
+                                <div class="flex-1 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                    <p class="text-[10px] text-slate-400 font-black uppercase">Sipariş Edilenler</p>
+                                    <p class="font-bold text-slate-800">${o.urunler?.map(u => u.isim + " (" + u.varyant + ")").join('<br>')}</p>
+                                    <p class="text-xl font-black text-blue-700 mt-2">${o.toplamTutar}</p>
+                                    <p class="text-[10px] text-slate-400 mt-4 font-mono">İP: ${o.ip}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                list.innerHTML = ordersHtml;
+
+                // 10'dan az veri geldiyse sayfa sonudur, butonu gizle
+                if (querySnapshot.docs.length < ORDERS_PER_PAGE) {
+                    document.getElementById('load-more-btn').classList.add('hidden');
+                } else {
+                    document.getElementById('load-more-btn').classList.remove('hidden');
+                }
+
+            } catch (e) { 
+                list.innerHTML = `<div class="p-5 bg-red-50 text-red-600 font-bold border border-red-200 rounded">HATA OLUŞTU:<br>${e.message}<br><br><span class="text-sm text-slate-600">NOT: Eğer 'requires an index' hatası alıyorsan, F12 (Konsol) ekranını aç ve orada Firebase'in verdiği mavi linke tıklayarak İndeks oluştur.</span></div>`; 
+            }
+        };
+
+        window.updateOrderStatus = async (id, newStatus) => {
+            if(!confirm(`Siparişi '${newStatus}' olarak değiştirmek istediğinize emin misiniz?`)) return;
+            try {
+                await updateDoc(doc(db, "orders", id), { durum: newStatus });
+                // Filtrelenmiş listedeysek ve durum değiştiyse, ürünü o listeden çıkarmak için listeyi yenile
+                if(currentFilter !== 'tümü') {
+                    refreshOrders();
+                } else {
+                    document.getElementById(`badge-${id}`).innerText = newStatus;
+                }
+            } catch(e) { alert("Güncellenemedi: " + e.message); }
+        };
+
+        window.deleteOrder = async (id) => {
+            if(!confirm("Kalıcı olarak silinecek. Onaylıyor musun?")) return;
+            try {
+                await deleteDoc(doc(db, "orders", id));
+                refreshOrders(); 
+            } catch(e) { alert("Silinemedi: " + e.message); }
+        };
+
+        // --- ÜRÜN & KAMPANYA İŞLEMLERİ ---
+        window.loadProductsAdmin = async () => {
+            const list = document.getElementById('product-list-admin');
+            list.innerHTML = 'Ürünler Yükleniyor...';
+            try {
+                const querySnapshot = await getDocs(collection(db, "products"));
+                let html = '';
+                querySnapshot.forEach((docSnap) => {
+                    const p = docSnap.data();
+                    const id = docSnap.id;
+                    const statusClass = p.aktif ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700';
+                    const statusText = p.aktif ? 'SATIŞTA' : 'GİZLENDİ / STOK YOK';
+                    const actionBtn = p.aktif ? 
+                        `<button onclick="toggleProduct('${id}', false)" class="w-full mt-3 bg-red-50 text-red-600 font-bold py-2 rounded">Satışı Durdur</button>` : 
+                        `<button onclick="toggleProduct('${id}', true)" class="w-full mt-3 bg-green-50 text-green-600 font-bold py-2 rounded">Satışa Aç</button>`;
+                    const varyantMetni = p.varyantlar ? p.varyantlar.join(', ') : '';
+
+                    html += `
+                        <div class="bg-white p-4 rounded-2xl shadow border border-slate-200 text-center relative">
+                            <button onclick="deleteProduct('${id}')" class="absolute top-2 right-2 bg-red-500 text-white w-6 h-6 rounded-full text-xs font-bold hover:bg-red-700">X</button>
+                            <img src="${p.resim}" class="h-32 w-full object-cover rounded-xl mb-3">
+                            <span class="text-[10px] font-black px-2 py-1 rounded ${statusClass}">${statusText}</span>
+                            <h3 class="font-black text-lg mt-2">${p.isim}</h3>
+                            <p class="text-blue-600 font-bold text-xl">${p.fiyat} ₺</p>
+                            <p class="text-xs text-slate-500 mt-2 bg-slate-50 p-1 rounded border"><strong>${p.varyantAdi}:</strong> ${varyantMetni}</p>
+                            ${actionBtn}
+                        </div>
+                    `;
+                });
+                list.innerHTML = html;
+            } catch(e) { list.innerHTML = `Hata: ${e.message}`; }
+        };
+
+        window.toggleProduct = async (id, makeActive) => {
+            if(!confirm(`Ürün ${makeActive ? 'satışa açılacak' : 'siteden gizlenecek'}. Onaylıyor musun?`)) return;
+            try { await updateDoc(doc(db, "products", id), { aktif: makeActive }); loadProductsAdmin(); } catch(e) { alert("Hata: " + e.message); }
+        };
+
+        window.deleteProduct = async (id) => {
+            if(!confirm("Ürün SİLİNECEK. Bu işlem geri alınamaz.")) return;
+            try { await deleteDoc(doc(db, "products", id)); loadProductsAdmin(); } catch(e) { alert("Hata: " + e.message); }
+        };
+
+        document.getElementById('addProductForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('add-prod-btn');
+            btn.disabled = true; btn.innerText = "EKLENİYOR...";
+            try {
+                const rawVariants = document.getElementById('new-prod-variants').value;
+                const variantArray = rawVariants.split(',').map(v => v.trim()).filter(v => v !== "");
+                if(variantArray.length === 0) { alert("En az bir varyant girin."); btn.disabled = false; btn.innerText = "SİSTEME YENİ ÜRÜN EKLE"; return; }
+                const newProductData = {
+                    isim: document.getElementById('new-prod-name').value.trim(),
+                    fiyat: Number(document.getElementById('new-prod-price').value),
+                    resim: document.getElementById('new-prod-img').value.trim(),
+                    varyantAdi: document.getElementById('new-prod-vname').value.trim(),
+                    varyantlar: variantArray,
+                    aktif: true,
+                    eklenmeTarihi: serverTimestamp()
+                };
+                await addDoc(collection(db, "products"), newProductData);
+                alert("Ürün eklendi."); document.getElementById('addProductForm').reset(); loadProductsAdmin();
+            } catch (error) { alert("Hata: " + error.message); } finally { btn.disabled = false; btn.innerText = "SİSTEME YENİ ÜRÜN EKLE"; }
+        });
+
+        async function loadCampaignSettings() {
+            try {
+                const docSnap = await getDoc(doc(db, "settings", "campaign"));
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    document.getElementById('set-camp-active').value = data.active.toString();
+                    document.getElementById('set-camp-price').value = data.secondProductPrice;
+                    document.getElementById('set-camp-msg').value = data.message;
+                    
+                    // YENİ EKLENEN KISIM: Minimum Adeti Çekme (Eğer veritabanında yoksa 1 kabul eder)
+                    document.getElementById('set-camp-min').value = data.minOrderCount || 1;
+                }
+            } catch (e) {}
+        }
+
+        window.saveCampaignSettings = async () => {
+            try {
+                await setDoc(doc(db, "settings", "campaign"), {
+                    active: document.getElementById('set-camp-active').value === "true",
+                    secondProductPrice: Number(document.getElementById('set-camp-price').value),
+                    message: document.getElementById('set-camp-msg').value,
+                    
+                    // YENİ EKLENEN KISIM: Minimum Adeti Yazma
+                    minOrderCount: Number(document.getElementById('set-camp-min').value) || 1
+                });
+                alert("Başarılı.");
+            } catch (e) { alert("Hata: " + e.message); }
+        };
+
+        // Sistemi Başlat
+        refreshOrders();
+    </script>
+</body>
+</html>
