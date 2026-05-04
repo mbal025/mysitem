@@ -100,7 +100,6 @@
       overflow: hidden;
       box-shadow: 0 8px 32px rgba(200, 169, 110, 0.15);
     }
-
     .campaign-banner::before {
       content: '';
       position: absolute;
@@ -111,12 +110,10 @@
       background: radial-gradient(circle, rgba(200, 169, 110, 0.05) 0%, transparent 70%);
       animation: rotate 20s linear infinite;
     }
-
     @keyframes rotate {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
-
     .campaign-banner::after {
       content: '';
       position: absolute;
@@ -127,7 +124,6 @@
       background: linear-gradient(45deg, transparent 30%, rgba(200, 169, 110, 0.03) 50%, transparent 70%);
       z-index: 0;
     }
-
     .campaign-badge {
       position: relative;
       z-index: 1;
@@ -142,7 +138,6 @@
       border-radius: 20px;
       margin-bottom: 14px;
     }
-
     .campaign-title {
       position: relative;
       z-index: 1;
@@ -154,7 +149,6 @@
       margin-bottom: 8px;
       font-weight: 500;
     }
-
     .campaign-price {
       position: relative;
       z-index: 1;
@@ -169,7 +163,6 @@
       letter-spacing: -2px;
       margin-bottom: 4px;
     }
-
     .campaign-subtitle {
       position: relative;
       z-index: 1;
@@ -178,7 +171,6 @@
       letter-spacing: 1px;
       font-weight: 500;
     }
-
     .campaign-stars {
       position: relative;
       z-index: 1;
@@ -188,6 +180,90 @@
       margin-top: 12px;
       font-size: 12px;
       color: var(--gold);
+    }
+
+    /* INSTAGRAM HİKAYE TARZI MEMNUNİYET SLIDER */
+    .satisfaction-slider {
+      margin-bottom: 20px;
+    }
+    .satisfaction-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding: 0 2px;
+    }
+    .satisfaction-title {
+      font-family: var(--font-serif);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .satisfaction-title-icon {
+      font-size: 20px;
+    }
+    .satisfaction-badge {
+      background: linear-gradient(135deg, #ff4444, #ff6b6b);
+      color: white;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 10px;
+      letter-spacing: 0.5px;
+    }
+    .satisfaction-container {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      padding: 4px 2px 12px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .satisfaction-container::-webkit-scrollbar {
+      display: none;
+    }
+    .satisfaction-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      flex-shrink: 0;
+      padding: 0;
+      transition: transform 0.2s;
+    }
+    .satisfaction-item:active {
+      transform: scale(0.9);
+    }
+    .satisfaction-avatar-wrapper {
+      width: 66px;
+      height: 66px;
+      border-radius: 50%;
+      padding: 3px;
+      background: linear-gradient(135deg, #C8A96E, #f5d78e, #C8A96E);
+      flex-shrink: 0;
+    }
+    .satisfaction-avatar-wrapper img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #0D0D0D;
+    }
+    .satisfaction-avatar-name {
+      color: var(--text-secondary);
+      font-size: 10px;
+      font-weight: 600;
+      max-width: 66px;
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     /* YENİ LİSTELEME TASARIMI (BEYAZ KARTLAR) */
@@ -312,7 +388,6 @@
       padding: 20px;
       cursor: pointer;
     }
-
     .lightbox-content {
       position: relative;
       max-width: 95vw;
@@ -322,7 +397,6 @@
       align-items: center;
       cursor: default;
     }
-
     .lightbox-image {
       max-width: 100%;
       max-height: 80vh;
@@ -331,13 +405,11 @@
       box-shadow: 0 20px 60px rgba(200, 169, 110, 0.3);
       animation: zoomIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1.2);
     }
-
     .lightbox-info {
       margin-top: 20px;
       text-align: center;
       color: white;
     }
-
     .lightbox-title {
       font-family: var(--font-serif);
       font-size: 22px;
@@ -345,13 +417,11 @@
       color: var(--gold);
       margin-bottom: 5px;
     }
-
     .lightbox-price {
       font-size: 18px;
       font-weight: 700;
       color: var(--text-primary);
     }
-
     .lightbox-close {
       position: absolute;
       top: -50px;
@@ -370,26 +440,17 @@
       transition: all 0.3s;
       z-index: 10;
     }
-
     .lightbox-close:hover {
       background: rgba(255, 255, 255, 0.2);
       transform: rotate(90deg);
     }
-
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
     }
-
     @keyframes zoomIn {
-      from { 
-        opacity: 0;
-        transform: scale(0.8);
-      }
-      to { 
-        opacity: 1;
-        transform: scale(1);
-      }
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
     }
   </style>
 </head>
@@ -420,6 +481,18 @@
       <div class="campaign-price">1.200 ₺</div>
       <div class="campaign-subtitle">Kapıda Ödeme · Ücretsiz Kargo</div>
       <div class="campaign-stars">★ ★ ★ ★ ★</div>
+    </div>
+
+    <!-- INSTAGRAM HİKAYE TARZI MEMNUNİYET SLIDER -->
+    <div class="satisfaction-slider">
+      <div class="satisfaction-header">
+        <div class="satisfaction-title">
+          <span class="satisfaction-title-icon">💬</span>
+          Müşteri Memnuniyeti
+        </div>
+        <span class="satisfaction-badge">⚡ YENİ</span>
+      </div>
+      <div class="satisfaction-container" id="satisfactionContainer"></div>
     </div>
 
     <div id="product-list" class="product-grid"></div>
@@ -569,6 +642,18 @@
       }
     };
 
+    // ============ MEMNUNİYET SLIDER VERİLERİ ============
+    const satisfactionData = [
+      { image: "https://i.hizliresim.com/ek6mt5f.jpg", name: "Müşteri memnuniyeti" },
+      { image: "https://i.hizliresim.com/4th9xnp.jpg", name: "MÜŞTERİ MEMNUNİYETİ" },
+      { image: "https://i.hizliresim.com/6wo49xq.jpg", name: "MÜŞTERİ MEMNUNİYETİ" },
+      { image: "https://i.hizliresim.com/l4goj53.jpg", name: "MÜŞTERİ MEMNUNİYETİ" },
+      { image: "https://i.hizliresim.com/rumsv01.jpg", name: "MÜŞTERİ MEMNUNİYETİ" },
+      { image: "https://i.hizliresim.com/k4c7b5r.jpg", name: "MÜŞTERİ MEMNUNİYETİ" },
+      { image: "https://i.hizliresim.com/stjiizw.jpg", name: "MÜŞTERİ MEMNUNİYETİ" },
+      { image: "https://i.hizliresim.com/icuk6ot.jpg", name: "MÜŞTERİ MEMNUNİYETİ" }
+    ];
+
     const reviews = [
       { name: "Ahmet Yılmaz", avatar: "https://i.pravatar.cc/100?img=11", date: "2 gün önce", stars: 5, text: "Gerçekten harika bir alışveriş deneyimiydi. Ayakkabıların kalitesi beklediğimin çok üstünde çıktı. 2 günde teslim edildi, paketleme bile özenliydi. Kesinlikle tekrar alışveriş yapacağım.", images: [] },
       { name: "Zeynep Kaya", avatar: "https://i.pravatar.cc/100?img=5", date: "1 hafta önce", stars: 5, text: "Kampanyadan 2 ürün aldım, ikisi de birbirinden güzel. Müşteri hizmetleri çok ilgiliydi, WhatsApp'tan anında dönüş yaptılar.", images: [] },
@@ -676,6 +761,53 @@
       }, 0);
     }
 
+    // ============ MEMNUNİYET SLIDER ============
+    function initSatisfactionSlider() {
+      const container = document.getElementById('satisfactionContainer');
+      if (!container) return;
+
+      container.innerHTML = satisfactionData.map((item) => `
+        <button class="satisfaction-item" onclick="window.openSatisfactionLightbox('${item.image}', '${item.name}')">
+          <div class="satisfaction-avatar-wrapper">
+            <img src="${item.image}" alt="${item.name}" loading="lazy" onerror="this.src='https://i.hizliresim.com/ek6mt5f.jpg'">
+          </div>
+          <span class="satisfaction-avatar-name">${item.name}</span>
+        </button>
+      `).join('');
+    }
+
+    window.openSatisfactionLightbox = (imageUrl, name) => {
+      const existingLightbox = document.querySelector('.lightbox-overlay');
+      if (existingLightbox) existingLightbox.remove();
+
+      const overlay = document.createElement('div');
+      overlay.className = 'lightbox-overlay';
+      overlay.innerHTML = `
+        <div class="lightbox-content" onclick="event.stopPropagation();" style="text-align: center;">
+          <button class="lightbox-close" onclick="window.closeLightbox()">✕</button>
+          <div style="width: 200px; height: 200px; border-radius: 50%; padding: 4px; background: linear-gradient(135deg, #C8A96E, #f5d78e, #C8A96E); margin: 0 auto 15px; box-shadow: 0 15px 40px rgba(200, 169, 110, 0.3);">
+            <img src="${imageUrl}" alt="${name}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #0D0D0D;" onerror="this.src='https://i.hizliresim.com/ek6mt5f.jpg'">
+          </div>
+          <div class="lightbox-title" style="font-size: 20px; margin-bottom: 4px;">${name}</div>
+          <div style="color: var(--success); font-size: 11px; margin-bottom: 10px;">✓ Doğrulanmış Alışveriş</div>
+          <div style="color: var(--gold); font-size: 18px; letter-spacing: 2px;">★ ★ ★ ★ ★</div>
+        </div>
+      `;
+
+      overlay.addEventListener('click', window.closeLightbox);
+      
+      const escHandler = (e) => {
+        if (e.key === 'Escape') {
+          window.closeLightbox();
+          document.removeEventListener('keydown', escHandler);
+        }
+      };
+      document.addEventListener('keydown', escHandler);
+
+      document.body.appendChild(overlay);
+      document.body.style.overflow = 'hidden';
+    };
+
     async function initSystem() {
       try {
         try {
@@ -693,6 +825,7 @@
           if (!campaignSettings.minOrderCount) campaignSettings.minOrderCount = 1;
         }
         await loadProducts();
+        initSatisfactionSlider();
       } catch (err) {
         document.getElementById('loading').innerText = "Yüklenirken bir hata oluştu.";
       }
@@ -730,7 +863,7 @@
           <div class="card-light">
             <div class="card-img-wrapper" onclick="event.stopPropagation(); window.openLightbox('${p.resim}', '${p.isim.replace(/'/g, "\\'")}', ${p.fiyat})">
               <div class="badge-hot">🔥 Çok Satan</div>
-              <!--<div class="badge-price">${p.fiyat} ₺</div>-->
+              <div class="badge-price">${p.fiyat} ₺</div>
               <img src="${p.resim}" alt="${p.isim}" loading="lazy">
               <div class="badge-zoom">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
