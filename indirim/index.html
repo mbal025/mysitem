@@ -41,6 +41,7 @@
       --text-secondary: #B0A99F;
       --text-muted: #6B6B6B;
       --gold: #C8A96E;
+	  --red: #FF0000;
       --gold-light: rgba(200, 169, 110, 0.12);
       --gold-border: rgba(200, 169, 110, 0.3);
       --danger: #FF4C4C;
@@ -74,6 +75,7 @@
 
     .font-serif { font-family: var(--font-serif); }
     .text-gold { color: var(--gold); }
+	.text-red { color: var(--red); }
     .container { max-width: 500px; margin: 0 auto; padding: 0 18px; }
 
     /* HEADER */
@@ -284,7 +286,11 @@
         </div>
         <div class="info-box">
           ⚠️ <strong class="text-gold">Sipariş Ver</strong> butonuna bastığınızda siparişiniz oluşturulur.<br>
-          📲 Onay için müşteri temsilcimiz WhatsApp üzerinden iletişime geçecektir.
+          📲 Onay için müşteri temsilcimiz WhatsApp üzerinden iletişime geçecektir.<br>
+		  🚚 <strong class="text-red">Önemli Uyarı</strong>: ARAS KARGO ile çalışıyoruz.
+Köylere, askeriye ve inşaatlara ARAS KARGO **gönderim yapmamaktadır.**
+Çoğu müşterimiz adresini eksik yazmaktadır, adres bilginiz eksik olması durumunda siparişiniz kargoya **verilmeyecektir**.
+Sipariş veren müşterilerimizin lütfen bu duruma dikkat etmesini rica ederiz.
         </div>
         <button type="submit" id="submitBtn" class="btn-submit" disabled>2 ürün seçmeniz gerekiyor</button>
       </form>
