@@ -190,6 +190,105 @@
     .success-timer { font-size: 12px; color: var(--text-muted); margin-top: 24px; font-family: monospace; }
     @keyframes fadeInOverlay { to { opacity: 1; } }
     @keyframes slideUpModal { to { transform: translateY(0); } }
+
+    /* LIGHTBOX MODAL */
+    .lightbox-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 0;
+      animation: fadeIn 0.3s forwards;
+      padding: 20px;
+      cursor: pointer;
+    }
+
+    .lightbox-content {
+      position: relative;
+      max-width: 95vw;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: default;
+    }
+
+    .lightbox-image {
+      max-width: 100%;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(200, 169, 110, 0.3);
+      animation: zoomIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+    }
+
+    .lightbox-info {
+      margin-top: 20px;
+      text-align: center;
+      color: white;
+    }
+
+    .lightbox-title {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--gold);
+      margin-bottom: 5px;
+    }
+
+    .lightbox-price {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: -50px;
+      right: 0;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      z-index: 10;
+    }
+
+    .lightbox-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: rotate(90deg);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes zoomIn {
+      from { 
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to { 
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
   </style>
 </head>
 <body>
@@ -335,8 +434,8 @@
         if (customerInfo.firstName) purchaseParams.fn = customerInfo.firstName;
         if (customerInfo.lastName) purchaseParams.ln = customerInfo.lastName;
         
-        this.track('Purchase', purchaseParams, orderId); // Frontend event_id eklendi
-        this.sendCAPIEvent('Purchase', purchaseParams, orderId); // Backend event_id eklendi
+        this.track('Purchase', purchaseParams, orderId);
+        this.sendCAPIEvent('Purchase', purchaseParams, orderId);
       },
       async sendCAPIEvent(eventName, eventData, eventId = null) {
         if (!window.FB_CAPI_ACCESS_TOKEN || window.FB_CAPI_ACCESS_TOKEN === 'BURAYA_CAPI_ACCESS_TOKEN_GELECEK') return;
@@ -350,9 +449,7 @@
             custom_data: eventData
           };
           if(eventId) payloadData.event_id = eventId;
-
           const eventPayload = { data: [payloadData] };
-          
           await fetch(`https://graph.facebook.com/v18.0/${window.FB_CAPI_PIXEL_ID}/events?access_token=${window.FB_CAPI_ACCESS_TOKEN}`, {
             method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(eventPayload)
           });
@@ -428,7 +525,6 @@
     setInterval(() => { currentReviewIndex = (currentReviewIndex + 1) % reviews.length; updateReviewDisplay(); }, 5000);
     updateReviewDisplay();
 
-    // TOAST FONKSİYONU
     function showToast(message, type = 'error') {
       const existingToast = document.querySelector('.toast');
       if (existingToast) existingToast.remove();
@@ -441,7 +537,6 @@
       setTimeout(() => toast.remove(), 3000);
     }
 
-    // YENİ EKLENEN: TAM EKRAN BAŞARI MODALI FONKSİYONU
     window.showSuccessModal = function() {
       const overlay = document.createElement('div');
       overlay.className = 'success-overlay';
@@ -454,8 +549,6 @@
         </div>
       `;
       document.body.appendChild(overlay);
-
-      // Geri sayım sayacı
       let counter = 15;
       const interval = setInterval(() => {
         counter--;
@@ -493,58 +586,102 @@
       }
     }
 
-async function loadProducts() {
-  const querySnapshot = await getDocs(collection(db, "products"));
-  const listDiv = document.getElementById('product-list');
-  document.getElementById('loading').style.display = 'none';
-  listDiv.innerHTML = '';
+    async function loadProducts() {
+      const querySnapshot = await getDocs(collection(db, "products"));
+      const listDiv = document.getElementById('product-list');
+      document.getElementById('loading').style.display = 'none';
+      listDiv.innerHTML = '';
 
-  // Ürünleri diziye al
-  const productsArray = [];
-  querySnapshot.forEach((doc) => {
-    const p = { id: doc.id, ...doc.data() };
-    if (!p.aktif) return;
-    productsArray.push(p);
-  });
+      const productsArray = [];
+      querySnapshot.forEach((doc) => {
+        const p = { id: doc.id, ...doc.data() };
+        if (!p.aktif) return;
+        productsArray.push(p);
+      });
 
-  // İstemci tarafında eklenmeTarihi'ne göre sırala (ilk eklenen önce)
-  productsArray.sort((a, b) => {
-    const dateA = a.eklenmeTarihi ? a.eklenmeTarihi.toDate() : new Date(0);
-    const dateB = b.eklenmeTarihi ? b.eklenmeTarihi.toDate() : new Date(0);
-    return dateA - dateB; // asc: küçükten büyüğe (ilk eklenen önce)
-  });
+      productsArray.sort((a, b) => {
+        const dateA = a.eklenmeTarihi ? a.eklenmeTarihi.toDate() : new Date(0);
+        const dateB = b.eklenmeTarihi ? b.eklenmeTarihi.toDate() : new Date(0);
+        return dateA - dateB;
+      });
 
-  // Sıralanmış ürünleri ekrana bas
-  productsArray.forEach((p) => {
-    allProducts.push(p);
-    
-    let variantBoxes = (p.varyantlar || []).map(v => `
-      <div onclick="event.stopPropagation(); window.addToCart('${p.id}', '${v}')" class="variant-box">
-        ${v}
-      </div>
-    `).join('');
+      productsArray.forEach((p) => {
+        allProducts.push(p);
+        
+        let variantBoxes = (p.varyantlar || []).map(v => `
+          <div onclick="event.stopPropagation(); window.addToCart('${p.id}', '${v}')" class="variant-box">
+            ${v}
+          </div>
+        `).join('');
 
-    listDiv.innerHTML += `
-      <div class="card-light" onclick="window.viewProduct('${p.id}')">
-        <div class="card-img-wrapper">
-          <div class="badge-hot">🔥 Çok Satan</div>
-          <div class="badge-price">${p.fiyat} ₺</div>
-          <img src="${p.resim}" alt="${p.isim}" loading="lazy">
-          <div class="badge-zoom">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        listDiv.innerHTML += `
+          <div class="card-light">
+            <div class="card-img-wrapper" onclick="event.stopPropagation(); window.openLightbox('${p.resim}', '${p.isim.replace(/'/g, "\\'")}', ${p.fiyat})">
+              <div class="badge-hot">🔥 Çok Satan</div>
+              <div class="badge-price">${p.fiyat} ₺</div>
+              <img src="${p.resim}" alt="${p.isim}" loading="lazy">
+              <div class="badge-zoom">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              </div>
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">${p.isim}</h3>
+              <hr class="card-divider">
+              <div class="variant-label">${p.varyantAdi || 'NUMARA SEÇ'}</div>
+              <div class="variant-grid">
+                ${variantBoxes}
+              </div>
+            </div>
+          </div>`;
+      });
+    }
+
+    // LIGHTBOX FONKSİYONLARI
+    window.openLightbox = (imageUrl, productName, productPrice) => {
+      const existingLightbox = document.querySelector('.lightbox-overlay');
+      if (existingLightbox) existingLightbox.remove();
+
+      const overlay = document.createElement('div');
+      overlay.className = 'lightbox-overlay';
+      overlay.innerHTML = `
+        <div class="lightbox-content" onclick="event.stopPropagation();">
+          <button class="lightbox-close" onclick="window.closeLightbox()">✕</button>
+          <img src="${imageUrl}" alt="${productName}" class="lightbox-image" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22300%22><rect fill=%22%23333%22 width=%22300%22 height=%22300%22/><text x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-size=%2214%22>Resim Yüklenemedi</text></svg>'">
+          <div class="lightbox-info">
+            <div class="lightbox-title">${productName}</div>
+            <div class="lightbox-price">${productPrice} ₺</div>
           </div>
         </div>
-        <div class="card-content">
-          <h3 class="card-title">${p.isim}</h3>
-          <hr class="card-divider">
-          <div class="variant-label">${p.varyantAdi || 'NUMARA SEÇ'}</div>
-          <div class="variant-grid">
-            ${variantBoxes}
-          </div>
-        </div>
-      </div>`;
-  });
-}
+      `;
+
+      overlay.addEventListener('click', window.closeLightbox);
+      
+      const escHandler = (e) => {
+        if (e.key === 'Escape') {
+          window.closeLightbox();
+          document.removeEventListener('keydown', escHandler);
+        }
+      };
+      document.addEventListener('keydown', escHandler);
+
+      document.body.appendChild(overlay);
+      document.body.style.overflow = 'hidden';
+
+      const product = allProducts.find(p => p.isim === productName);
+      if (product) FacebookPixel.trackViewContent(product);
+    };
+
+    window.closeLightbox = () => {
+      const lightbox = document.querySelector('.lightbox-overlay');
+      if (lightbox) {
+        lightbox.style.opacity = '0';
+        lightbox.style.transition = 'opacity 0.3s';
+        setTimeout(() => {
+          lightbox.remove();
+          document.body.style.overflow = '';
+        }, 300);
+      }
+    };
 
     window.viewProduct = (id) => {
       const product = allProducts.find(p => p.id === id);
