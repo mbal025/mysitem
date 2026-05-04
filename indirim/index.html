@@ -15,12 +15,10 @@
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
     
-    // Pixel ID'nizi buraya girin
     const FB_PIXEL_ID = '485582867441894';
     fbq('init', FB_PIXEL_ID);
     fbq('track', 'PageView');
     
-    // Facebook Conversions API Access Token (Opsiyonel - Sunucu tarafı takip için)
     const FB_CAPI_ACCESS_TOKEN = 'BURAYA_CAPI_ACCESS_TOKEN_GELECEK';
     const FB_CAPI_PIXEL_ID = FB_PIXEL_ID;
   </script>
@@ -473,7 +471,7 @@
       <div style="font-size:10px; color:var(--gold); letter-spacing:1.5px; text-transform:uppercase;" id="cart-count">0 Ürün</div>
       <div style="font-size:22px; font-weight:700;" id="total-price-display">0.00 ₺</div>
     </div>
-    <button onclick="scrollToOrder()" class="sticky-btn" id="sticky-checkout-btn">Siparişi Tamamla</button>
+    <button onclick="window.scrollToOrder()" class="sticky-btn" id="sticky-checkout-btn">Siparişi Tamamla</button>
   </div>
 
   <section id="order-section" class="order-section hidden">
@@ -558,9 +556,8 @@
     let allProducts = [];
     let campaignSettings = { active: false, secondProductPrice: 0, message: "", minOrderCount: 1 };
     let userData = {};
-    window._hasAutoScrolledToForm = false; // Otomatik kaydırma kontrol bayrağı
+    window._hasAutoScrolledToForm = false; 
 
-    // ============ FACEBOOK PIXEL YARDIMCI FONKSİYONLARI ============
     const FacebookPixel = {
       track(eventName, params = {}) {
         if (typeof fbq === 'function') {
@@ -642,12 +639,31 @@
       }
     };
 
-    // ============ YORUM VERİLERİ ============
     const reviews = [
       { name: "Ahmet Yılmaz", avatar: "https://i.pravatar.cc/100?img=11", date: "2 gün önce", stars: 5, text: "Gerçekten harika bir alışveriş deneyimiydi. Ayakkabıların kalitesi beklediğimin çok üstünde çıktı. 2 günde teslim edildi, paketleme bile özenliydi. Kesinlikle tekrar alışveriş yapacağım.", images: ["https://picsum.photos/100/100?random=1", "https://picsum.photos/100/100?random=2"] },
       { name: "Zeynep Kaya", avatar: "https://i.pravatar.cc/100?img=5", date: "1 hafta önce", stars: 5, text: "Kampanyadan 2 ürün aldım, ikisi de birbirinden güzel. Müşteri hizmetleri çok ilgiliydi, WhatsApp'tan anında dönüş yaptılar.", images: ["https://picsum.photos/100/100?random=3"] },
       { name: "Mehmet Demir", avatar: "https://i.pravatar.cc/100?img=12", date: "3 gün önce", stars: 5, text: "Deri dokusu, dikiş kalitesi gerçekten premium seviyede. Fiyat performans olarak piyasadaki en iyi seçenek.", images: ["https://picsum.photos/100/100?random=4", "https://picsum.photos/100/100?random=5"] },
-      { name: "Ayşe Öztürk", avatar: "https://i.pravatar.cc/100?img=9", date: "5 gün önce", stars: 5, text: "Kapıda ödeme seçeneği çok güven vericiydi. Ürünü teslim almadan önce kontrol ettim, her şey eksiksizdi.", images: [] }
+      { name: "Ayşe Öztürk", avatar: "https://i.pravatar.cc/100?img=9", date: "5 gün önce", stars: 5, text: "Kapıda ödeme seçeneği çok güven vericiydi. Ürünü teslim almadan önce kontrol ettim, her şey eksiksizdi.", images: [] },
+      { name: "Emre Çelik", avatar: "https://i.pravatar.cc/100?img=15", date: "1 gün önce", stars: 5, text: "Siparişim beklediğimden çok daha hızlı geldi. Ürün fotoğraflardaki gibi, hatta daha güzel. Teşekkürler!", images: ["https://picsum.photos/100/100?random=6"] },
+      { name: "Elif Şahin", avatar: "https://i.pravatar.cc/100?img=23", date: "4 gün önce", stars: 5, text: "İade sürecim çok sorunsuz halledildi. Müşteri temsilcisi adım adım yardımcı oldu. Güvenlik ve kalite mükemmel.", images: [] },
+      { name: "Burak Yıldız", avatar: "https://i.pravatar.cc/100?img=33", date: "6 gün önce", stars: 4, text: "Ürün kaliteli ama kargo biraz geç geldi. Yine de memnunum, fiyatına göre çok iyi.", images: ["https://picsum.photos/100/100?random=7", "https://picsum.photos/100/100?random=8"] },
+      { name: "Merve Aydın", avatar: "https://i.pravatar.cc/100?img=44", date: "2 hafta önce", stars: 5, text: "Hediyelik aldığım ürün tam istediğim gibi çıktı. Paketleme o kadar şık ki, hediye paketi yapmama bile gerek kalmadı!", images: ["https://picsum.photos/100/100?random=9"] },
+      { name: "Can Arslan", avatar: "https://i.pravatar.cc/100?img=52", date: "3 gün önce", stars: 5, text: "Beden tam oturdu, malzeme kalitesi mükemmel. Bir sonraki siparişimi de buradan vereceğim kesin.", images: [] },
+      { name: "Seda Kurt", avatar: "https://i.pravatar.cc/100?img=61", date: "1 hafta önce", stars: 5, text: "Canlı destekte sorularıma anında yanıt aldım. Ürün de açıklamada belirtildiği gibi geldi. Çok memnun kaldım.", images: ["https://picsum.photos/100/100?random=10", "https://picsum.photos/100/100?random=11", "https://picsum.photos/100/100?random=12"] },
+      { name: "Yusuf Doğan", avatar: "https://i.pravatar.cc/100?img=70", date: "5 gün önce", stars: 4, text: "Genel olarak memnunum. Sadece renk tonu fotoğraftakinden biraz farklıydı ama yine de beğendim.", images: ["https://picsum.photos/100/100?random=13"] },
+      { name: "İrem Kılıç", avatar: "https://i.pravatar.cc/100?img=18", date: "10 gün önce", stars: 5, text: "İndirim döneminde aldım, fiyatına göre inanılmaz kalite. Kumaşı yumuşak, dikişleri sağlam. Tavsiye ederim!", images: [] },
+      { name: "Mustafa Aslan", avatar: "https://i.pravatar.cc/100?img=27", date: "2 gün önce", stars: 5, text: "İkinci siparişim ve yine harika bir deneyim. Sadakat programı da çok avantajlı, puan biriktirmek süper.", images: ["https://picsum.photos/100/100?random=14"] },
+      { name: "Gamze Özer", avatar: "https://i.pravatar.cc/100?img=36", date: "1 hafta önce", stars: 5, text: "Ürün açıklaması çok detaylıydı, bu sayede doğru bedeni seçebildim. Tam istediğim gibi oldu, teşekkürler.", images: ["https://picsum.photos/100/100?random=15", "https://picsum.photos/100/100?random=16"] },
+      { name: "Ali Polat", avatar: "https://i.pravatar.cc/100?img=45", date: "4 gün önce", stars: 4, text: "Kalite iyi, fiyat uygun. Sadece kargo takip sistemi biraz daha güncel olabilirdi. Ürün için 5 yıldız hak ediyor.", images: [] },
+      { name: "Dilara Koç", avatar: "https://i.pravatar.cc/100?img=54", date: "3 gün önce", stars: 5, text: "Arkadaşıma hediye aldım, çok beğendi. Hatta o da hemen sipariş verdi. Kalite ve hizmet bir arada!", images: ["https://picsum.photos/100/100?random=17"] },
+      { name: "Serkan Yildirim", avatar: "https://i.pravatar.cc/100?img=63", date: "1 hafta önce", stars: 5, text: "Mobil uygulamadan sipariş verdim, çok pratikti. Bildirimlerle süreci takip etmek kolaydı. Ürün de mükemmel geldi.", images: ["https://picsum.photos/100/100?random=18", "https://picsum.photos/100/100?random=19"] },
+      { name: "Esra Erdoğan", avatar: "https://i.pravatar.cc/100?img=72", date: "6 gün önce", stars: 5, text: "İlk kez alışveriş yaptım ama son olmayacak. Güvenlik önlemleri, hızlı teslimat, kaliteli ürün... Her şey tam!", images: [] },
+      { name: "Tolga Kara", avatar: "https://i.pravatar.cc/100?img=81", date: "2 gün önce", stars: 4, text: "Ürün güzel ama kutusu hafif ezik geldi. İçindeki ürün sağlam olduğu için sorun yok, yine de dikkat edilebilir.", images: ["https://picsum.photos/100/100?random=20"] },
+      { name: "Büşra Tekin", avatar: "https://i.pravatar.cc/100?img=90", date: "5 gün önce", stars: 5, text: "Stok uyarısı özelliği sayesinde istediğim ürün geldiğinde hemen sipariş verdim. Çok memnunum, teşekkürler!", images: ["https://picsum.photos/100/100?random=21", "https://picsum.photos/100/100?random=22"] },
+      { name: "Onur Aksoy", avatar: "https://i.pravatar.cc/100?img=13", date: "1 hafta önce", stars: 5, text: "Fiyat/performans açısından rakipsiz. Aynı kaliteyi başka yerde bu fiyata bulamazsınız. Kesinlikle tavsiye ederim.", images: [] },
+      { name: "Hazal Çetin", avatar: "https://i.pravatar.cc/100?img=22", date: "3 gün önce", stars: 5, text: "Kargo görevlisi çok kibar davrandı, ürünümü özenle teslim etti. Site deneyimi de bir o kadar profesyonel.", images: ["https://picsum.photos/100/100?random=23"] },
+      { name: "Deniz Güneş", avatar: "https://i.pravatar.cc/100?img=31", date: "4 gün önce", stars: 5, text: "Ürün açıklamaları çok net, beden tablosu doğru. Hiç sürpriz yaşamadan istediğim ürünü aldım. Süper!", images: ["https://picsum.photos/100/100?random=24", "https://picsum.photos/100/100?random=25"] },
+      { name: "Kübra Baş", avatar: "https://i.pravatar.cc/100?img=40", date: "1 hafta önce", stars: 4, text: "Genel olarak çok iyi. Sadece iade etiketi kargo kutusunun içinde olsaydı daha pratik olurdu. Yine de memnunum.", images: [] }
     ];
 
     let currentReviewIndex = 0;
@@ -708,6 +724,7 @@
       setTimeout(() => toast.remove(), 3000);
     }
 
+    // YENİDEN TANIMLANAN: Scroll Fonksiyonu
     window.scrollToOrder = () => {
       const orderSection = document.getElementById('order-section');
       if (orderSection.classList.contains('hidden')) {
@@ -901,12 +918,12 @@
           submitBtn.classList.add('active');
           submitBtn.innerText = '✅ SİPARİŞİ ONAYLA';
 
-          // ŞARTLAR SAĞLANDIĞINDA SADECE BİR KERE FORMA KAYDIR
+          // YUMUŞAK KAYDIRMA KONTROLÜ
           if (!window._hasAutoScrolledToForm) {
             setTimeout(() => {
-              document.getElementById('adSoyad').scrollIntoView({ behavior: 'smooth', block: 'center' });
+              document.getElementById('order-section').scrollIntoView({ behavior: 'smooth' });
               document.getElementById('adSoyad').focus();
-            }, 400);
+            }, 300);
             window._hasAutoScrolledToForm = true;
           }
         }
