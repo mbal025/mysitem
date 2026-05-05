@@ -1019,13 +1019,17 @@
       }
     }
 
-    async function initSystem() {
-      try {
-        try {
-          const ipRes = await fetch('https://api.ipify.org?format=json');
-          const ipData = await ipRes.json();
-          userData.ip = ipData.ip;
-        } catch (e) {}
+async function initSystem() {
+  try {
+   
+    window.AKTIF_DOMAIN = window.location.hostname;
+    console.log('📌 Siparişin geldiği site:', window.AKTIF_DOMAIN);
+    
+    try {
+      const ipRes = await fetch('https://api.ipify.org?format=json');
+      const ipData = await ipRes.json();
+      userData.ip = ipData.ip;
+    } catch (e) {}
 
         await loadSiteSettings();
 
@@ -1352,7 +1356,8 @@
           toplamTutar: totalTutar.toFixed(2) + ' ₺',
           ip: ip.ip,
           tarih: serverTimestamp(),
-          durum: 'yeni'
+          durum: 'yeni',
+		  kaynakSite: window.AKTIF_DOMAIN || window.location.hostname  
         });
         
         const customerInfo = {
