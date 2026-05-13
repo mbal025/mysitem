@@ -528,7 +528,6 @@
   <main class="container products-section">
     <div id="loading" style="text-align:center; color:var(--gold); padding:50px; font-size:14px; letter-spacing:2px;">KOLEKSİYON YÜKLENİYOR...</div>
     
-    <!-- KAMPANYA BANNER -->
     <div class="campaign-banner">
       <div class="campaign-badge" id="campaignBadge">🔥 ÖZEL FIRSAT</div>
       <div class="campaign-title" id="campaignTitle">2 Çift Kampanya Fiyatı</div>
@@ -537,7 +536,6 @@
       <div class="campaign-stars">★ ★ ★ ★ ★</div>
     </div>
 
-    <!-- INSTAGRAM HİKAYE TARZI MEMNUNİYET SLIDER -->
     <div class="satisfaction-slider">
       <div class="satisfaction-header">
         <div class="satisfaction-title">
@@ -579,9 +577,9 @@
           <label>Ad Soyad *</label>
           <input class="custom-input" type="text" id="adSoyad" placeholder="Adınız ve soyadınız" required>
         </div>
-        <div class="input-group">
+<div class="input-group">
           <label>Telefon Numarası *</label>
-          <input class="custom-input" type="tel" id="telefon" placeholder="05XX XXX XX XX" maxlength="11" required>
+          <input class="custom-input" type="tel" id="telefon" placeholder="05XX XXX XX XX" oninput="let v = this.value.replace(/[^0-9]/g, ''); if(v.startsWith('905')) v = '0' + v.substring(2); else if(v.startsWith('5')) v = '0' + v; else if(v.length > 0 && !v.startsWith('0')) v = '0' + v; this.value = v.substring(0, 11);" required>
         </div>
         <div class="row">
           <div class="input-group">
@@ -655,7 +653,6 @@
     let userData = {};
     window._hasAutoScrolledToForm = false; 
 
-    // ============ FACEBOOK PIXEL YARDIMCI FONKSİYONLARI ============
     const FacebookPixel = {
       track(eventName, params = {}, eventId = null) { 
         if (typeof fbq === 'function') {
@@ -706,7 +703,6 @@
       }
     };
 
-    // ============ MEMNUNİYET SLIDER VERİLERİ ============
     const satisfactionData = [
       { image: "https://i.hizliresim.com/ek6mt5f.jpg", name: "Müşteri memnuniyeti" },
       { image: "https://i.hizliresim.com/4th9xnp.jpg", name: "MÜŞTERİ MEMNUNİYETİ" },
@@ -735,7 +731,6 @@
     const reviewContainer = document.getElementById('review-container');
     const reviewDots = document.getElementById('review-dots');
 
-    // ============ TÜRKİYE İL VE İLÇE VERİLERİ ============
     const ilIlceVerileri = {
       "Adana": ["Aladağ", "Ceyhan", "Çukurova", "Feke", "İmamoğlu", "Karaisalı", "Karataş", "Kozan", "Pozantı", "Saimbeyli", "Sarıçam", "Seyhan", "Tufanbeyli", "Yumurtalık", "Yüreğir"],
       "Adıyaman": ["Besni", "Çelikhan", "Gerger", "Gölbaşı", "Kahta", "Merkez", "Samsat", "Sincik", "Tut"],
@@ -851,12 +846,10 @@
     setInterval(() => { currentReviewIndex = (currentReviewIndex + 1) % reviews.length; updateReviewDisplay(); }, 5000);
     updateReviewDisplay();
 
-    // ============ İL VE İLÇE SELECT'LERİNİ DOLDUR ============
     function initIlIlceSelectors() {
       const ilSelect = document.getElementById('il');
       const ilceSelect = document.getElementById('ilce');
       
-      // İlleri alfabetik sırala ve ekle
       const iller = Object.keys(ilIlceVerileri).sort();
       iller.forEach(il => {
         const option = document.createElement('option');
@@ -865,16 +858,13 @@
         ilSelect.appendChild(option);
       });
 
-      // İl değiştiğinde ilçeleri güncelle
       ilSelect.addEventListener('change', function() {
         const secilenIl = this.value;
-        ilceSelect.innerHTML = ''; // İlçeleri temizle
+        ilceSelect.innerHTML = '';
         
         if (secilenIl && ilIlceVerileri[secilenIl]) {
-          // İlçeleri alfabetik sırala ve ekle
           const ilceler = [...ilIlceVerileri[secilenIl]].sort();
           
-          // Varsayılan "seçiniz" opsiyonu
           const defaultOption = document.createElement('option');
           defaultOption.value = '';
           defaultOption.textContent = 'İlçe Seçiniz';
@@ -889,7 +879,6 @@
           
           ilceSelect.disabled = false;
         } else {
-          // İl seçilmediyse
           const defaultOption = document.createElement('option');
           defaultOption.value = '';
           defaultOption.textContent = 'Önce il seçiniz';
@@ -938,7 +927,6 @@
       }, 0);
     }
 
-    // ============ MEMNUNİYET SLIDER ============
     function initSatisfactionSlider() {
       const container = document.getElementById('satisfactionContainer');
       if (!container) return;
@@ -985,7 +973,7 @@
       document.body.style.overflow = 'hidden';
     };
 
-    // ============ SİTE AYARLARINI YÜKLE ============
+    // ============ SİTE AYARLARINI YÜKLE (HEAD KODLARI DAHİL) ============
     async function loadSiteSettings() {
       try {
         const siteConfigDoc = await getDoc(doc(db, "settings", "siteConfig"));
@@ -1013,23 +1001,88 @@
           if (settings.reviewsTitle) document.getElementById('reviewsTitle').textContent = settings.reviewsTitle;
           if (settings.faqTitle) document.getElementById('faqTitle').textContent = settings.faqTitle;
           if (settings.footerText) document.getElementById('footerText').textContent = settings.footerText;
+          
+          // 🆕 HEAD KODLARINI YÜKLE
+          if (settings.headCode) {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = settings.headCode;
+            
+            const scripts = tempDiv.querySelectorAll('script');
+            const otherElements = [];
+            
+            Array.from(tempDiv.children).forEach(child => {
+              if (child.tagName !== 'SCRIPT') {
+                otherElements.push(child);
+              }
+            });
+            
+            otherElements.forEach(el => {
+              document.head.appendChild(el.cloneNode(true));
+            });
+            
+            let scriptIndex = 0;
+            
+            function loadNextScript() {
+              if (scriptIndex < scripts.length) {
+                const originalScript = scripts[scriptIndex];
+                const newScript = document.createElement('script');
+                
+                Array.from(originalScript.attributes).forEach(attr => {
+                  newScript.setAttribute(attr.name, attr.value);
+                });
+                
+                if (originalScript.textContent) {
+                  newScript.textContent = originalScript.textContent;
+                }
+                
+                if (originalScript.src) {
+                  newScript.onload = () => {
+                    scriptIndex++;
+                    loadNextScript();
+                  };
+                  newScript.onerror = () => {
+                    console.warn('Head script yüklenemedi:', originalScript.src);
+                    scriptIndex++;
+                    loadNextScript();
+                  };
+                } else {
+                  setTimeout(() => {
+                    scriptIndex++;
+                    loadNextScript();
+                  }, 50);
+                }
+                
+                document.head.appendChild(newScript);
+                
+                if (!originalScript.src) {
+                  scriptIndex++;
+                  loadNextScript();
+                }
+              } else {
+                console.log('✅ Tüm head kodları başarıyla yüklendi');
+              }
+            }
+            
+            if (scripts.length > 0) {
+              loadNextScript();
+            }
+          }
         }
       } catch (error) {
         console.error('Site ayarları yüklenirken hata:', error);
       }
     }
 
-async function initSystem() {
-  try {
-   
-    window.AKTIF_DOMAIN = window.location.hostname;
-    console.log('📌 Siparişin geldiği site:', window.AKTIF_DOMAIN);
-    
-    try {
-      const ipRes = await fetch('https://api.ipify.org?format=json');
-      const ipData = await ipRes.json();
-      userData.ip = ipData.ip;
-    } catch (e) {}
+    async function initSystem() {
+      try {
+        window.AKTIF_DOMAIN = window.location.hostname;
+        console.log('📌 Siparişin geldiği site:', window.AKTIF_DOMAIN);
+        
+        try {
+          const ipRes = await fetch('https://api.ipify.org?format=json');
+          const ipData = await ipRes.json();
+          userData.ip = ipData.ip;
+        } catch (e) {}
 
         await loadSiteSettings();
 
@@ -1042,7 +1095,7 @@ async function initSystem() {
           if (!campaignSettings.minOrderCount) campaignSettings.minOrderCount = 1;
         }
         
-        initIlIlceSelectors(); // İl ve ilçe seçicilerini başlat
+        initIlIlceSelectors();
         await loadProducts();
         initSatisfactionSlider();
       } catch (err) {
@@ -1324,8 +1377,15 @@ async function initSystem() {
       totalDisplay.innerText = total.toFixed(2) + ' ₺';
     }
 
-    document.getElementById('orderForm').addEventListener('submit', async (e) => {
+document.getElementById('orderForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      // TELEFON NUMARASI DOĞRULAMASI
+      const telInput = document.getElementById('telefon').value;
+      if (telInput.length !== 11 || !telInput.startsWith('05')) {
+        showToast('⚠️ Lütfen 05 ile başlayan 11 haneli geçerli bir numara girin.', 'error');
+        return;
+      }
       
       const hasMissingVariants = cart.some(item => !item.secilenVaryant || item.secilenVaryant === "");
       if (hasMissingVariants) {
@@ -1357,7 +1417,7 @@ async function initSystem() {
           ip: ip.ip,
           tarih: serverTimestamp(),
           durum: 'yeni',
-		  kaynakSite: window.AKTIF_DOMAIN || window.location.hostname  
+          kaynakSite: window.AKTIF_DOMAIN || window.location.hostname  
         });
         
         const customerInfo = {
