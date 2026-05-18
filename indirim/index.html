@@ -18,76 +18,23 @@ var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n
 }(window, document, 'ttq');
 </script>
 <!-- TikTok Pixel Code End -->
-  <script>
-   
-    let FB_PIXEL_ID = '27211982251775465'; 
-    
-  
-    window.addEventListener('DOMContentLoaded', async () => {
-      try {
-        const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js");
-        const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js");
-        
-        const firebaseConfig = {
-          apiKey: "AIzaSyCg4r8MpPJWKi9i-s2y4HKPbKBSP-ojK9s",
-          authDomain: "tekyaprak.firebaseapp.com",
-          projectId: "tekyaprak",
-          storageBucket: "tekyaprak.firebasestorage.app",
-          messagingSenderId: "863518206806",
-          appId: "1:863518206806:web:4fcbf8203854a59b1b04f7"
-        };
-        
-        const app = initializeApp(firebaseConfig, 'pixelApp');
-        const db = getFirestore(app);
-        
-       
-        const settingsDoc = await getDoc(doc(db, "settings", "siteConfig"));
-        if (settingsDoc.exists()) {
-          const settings = settingsDoc.data();
-          
-         
-          if (settings.facebookPixelId) {
-            FB_PIXEL_ID = settings.facebookPixelId;
-            
-           
-            const noscriptEl = document.getElementById('fb-noscript');
-            if (noscriptEl) {
-              const imgEl = document.createElement('img');
-              imgEl.height = '1';
-              imgEl.width = '1';
-              imgEl.style.display = 'none';
-              imgEl.src = `https://www.facebook.com/tr?id=${FB_PIXEL_ID}&ev=PageView&noscript=1`;
-              noscriptEl.innerHTML = '';
-              noscriptEl.appendChild(imgEl);
-            }
-          }
-          
-          
-          !function(f,b,e,v,n,t,s)
-          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-          n.queue=[];t=b.createElement(e);t.async=!0;
-          t.src=v;s=b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t,s)}(window, document,'script',
-          'https://connect.facebook.net/en_US/fbevents.js');
-          
-          fbq('init', FB_PIXEL_ID);
-          fbq('track', 'PageView');
-          
-          
-          window.FB_CAPI_ACCESS_TOKEN = settings.facebookCapiToken || 'BURAYA_CAPI_ACCESS_TOKEN_GELECEK';
-          window.FB_CAPI_PIXEL_ID = FB_PIXEL_ID;
-        }
-      } catch (error) {
-        console.error('Facebook Pixel yüklenirken hata:', error);
-      }
-    });
-  </script>
-  <noscript id="fb-noscript">
-    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1&ev=PageView&noscript=1"/>
-  </noscript>
-
+ <!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '27211982251775465');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=27211982251775465&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet">
